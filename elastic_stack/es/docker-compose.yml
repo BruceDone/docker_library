@@ -1,0 +1,49 @@
+version: '2'
+
+services:
+
+  elasticsearch:
+    image: elastic/elasticsearch:6.5.4
+    mem_limit: 4g
+    volumes:
+      - esdata1:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    user: "root"
+    cap_add:
+      - IPC_LOCK
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - cluster.name=docker-cluster
+      - network.host=0.0.0.0
+      - discovery.zen.minimum_master_nodes=1
+      - discovery.type=single-node
+    restart: always
+
+  kibana:
+    image: elastic/kibana:6.5.4
+    ports:
+      - "5602:5601"
+    environment:
+      - server.name=kibana
+      - elasticsearch.url=http://elasticsearch:9200
+      - server.host=0
+    links:
+      - elasticsearch:elasticsearch
+    depends_on:
+      - elasticsearch
+    restart: always
+
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+

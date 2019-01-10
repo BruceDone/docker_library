@@ -1,0 +1,12 @@
+version: '2.3'
+services:
+  apm_server:
+    image: elastic/apm-server:6.5.4
+    ports:
+        - "8200:8200"
+        - "8201:8200"
+    environment:
+        - apm-server.host=0.0.0.0
+    command: apm-server --strict.perms=false -e -d "*"
+    volumes:
+        - ./apm-server.yml:/usr/share/apm-server/apm-server.yml
