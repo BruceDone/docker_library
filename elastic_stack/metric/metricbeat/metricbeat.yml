@@ -31,3 +31,9 @@ output.elasticsearch:
   hosts: ["http://mg6.malongtech.cn:9200"]
   #username: '${ELASTICSEARCH_USERNAME:}'
   #password: '${ELASTICSEARCH_PASSWORD:}'
+
+# set up the dashboard
+setup.kibana:
+  host: "http://mg6.malongtech.cn:5602"
+setup.dashboard.enabled: true
+name: "elk.sever.com"
